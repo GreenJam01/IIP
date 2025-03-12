@@ -19,8 +19,6 @@ namespace SimpleWebScraper
     public class Program
     {
         public static string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
-        // defining a custom class to store 
-        // the scraped data 
 
         public static List<string> Categories = new List<string>()
         {
@@ -43,22 +41,15 @@ namespace SimpleWebScraper
         public static void SynonimsGatering(string? url, List<string> synonims)
         {
             var web = new HtmlWeb();
-            // Устанавливаем User-Agent
             web.UserAgent = UserAgent;
             var currentDocument = web.Load(url);
             var synonimsList = new List<string>();
 
-            // Ищем синонимы в строке с тегами <b> и <i>
             var nameNode = currentDocument.DocumentNode.SelectSingleNode("//p[b]");
             if (nameNode != null)
             {
-                // Извлекаем текст из <b>
                 string name = WebUtility.HtmlDecode(nameNode.SelectSingleNode(".//b")?.InnerText.Trim()).Trim();
-
-                // Извлекаем текст из <p> для поиска английского синонима
                 string fullText = nameNode.InnerText;
-
-                // Используем регулярное выражение для поиска шаблона (англ. <синоним>)
                 var match = Regex.Match(fullText, @"\(англ\.\s*([^)]+)\)");
                 if (match.Success)
                 {
@@ -80,13 +71,8 @@ namespace SimpleWebScraper
                 {
                     foreach (var node in nicknameNodes)
                     {
-                        // Извлекаем текст из каждого элемента <li>
                         string nickname = node.InnerText.Trim();
-
-                        // Убираем текст в скобках
                         nickname = nickname.Split('(')[0].Trim();
-
-                        // Добавляем в список, если строка не пустая
                         if (!string.IsNullOrEmpty(nickname))
                             synonimsList.Add(nickname);
                     }
@@ -229,6 +215,7 @@ namespace SimpleWebScraper
                  new ParallelOptions { MaxDegreeOfParallelism = 4 },
                 currentPage =>
                 {
+                    Page_Wiki_Load("https://steven-universe.fandom.com" + currentPage.Attributes["href"].Value);
                     SynonimsGatering("https://steven-universe.fandom.com" + currentPage.Attributes["href"].Value, synonims);
                 });
                 i++;

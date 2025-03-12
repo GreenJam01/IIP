@@ -11,14 +11,17 @@ namespace Elastic_Search
     public partial class Form1 : Form
     {
         ElasticSearchService service;
+     
         public Form1(ElasticSearchService service)
         {
             InitializeComponent();
             this.service = service;
-          // service.CreateIndex(new IndexDefinition());
+            //
+            service.CreateIndex(new IndexDefinition());
 
 
         }
+    
         public record DisplayItem
         {
             public string Title { get; set; }
@@ -27,6 +30,8 @@ namespace Elastic_Search
             public string Text { get; set; }
 
             public string Url { get; set; }
+
+            public double? Score { get; set; }
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -66,6 +71,7 @@ namespace Elastic_Search
                     Title = i.Title,
                     Text = i.Text,
                     Url = i.Url,
+                    Score = i.Score
                 }).ToList();
             }
             catch (Exception ex)

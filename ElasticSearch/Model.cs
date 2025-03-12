@@ -56,16 +56,12 @@ namespace ElasticSearch
 
     
         public string Title { get; set; }
-
-
         public List<string> Category { get; set; }
-
-
  
         public string Url { get; set; }
         public string Text { get; set; }
 
-        public decimal Score { get; set; }
+        public double? Score { get; set; }
         
         internal static SearchItemDocumentBase Map(Data.Page page)
         {

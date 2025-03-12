@@ -10,5 +10,8 @@
         public List<string> Category { get; set; } = new List<string>();
 
         public List<string> Images { get; set; } = new List<string>();
+
+        public List<float> ImageEmbedding { get; set; }
+        public List<float> TextEmbedding { get; set; }
     }
 }
